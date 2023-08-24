@@ -1,0 +1,91 @@
+﻿<Window x:Class="Pixelator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Pixelator"
+        mc:Ignorable="d"
+        FontFamily="Consolas"
+        Background="Black"
+        Foreground="White"
+        ResizeMode="NoResize"
+        Icon="1.ico"
+        Title="Pixelator" Height="500" Width="850">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="283*"/>
+            <ColumnDefinition Width="284*"/>
+            <ColumnDefinition Width="283*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="11*"/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+
+
+
+
+        <Button Content="Select Image"  Click="SelectImage_Click" Background="White" FontSize="20"   Grid.Row="1" Grid.Column="0" Width="150" Height="50" Margin="67,15,66,15"/>
+
+        <Button Content="Pixelate" Click="Pixelate_Click" Background="White" FontSize="20"   Grid.Row="1" Grid.Column="1" Width="100" Height="50" Margin="92,15,92,15"/>
+
+        <Button Content="Save Image" Click="SaveImage_Click" Background="White" FontSize="20"   Grid.Row="1" Grid.Column="2" Width="150" Height="50" Margin="66,15,67,15"/>
+
+        <TextBlock Grid.Column="1" Text="Pixel X" VerticalAlignment="Top" Margin="80,158,0,0"/>
+        <TextBox x:Name="PixelTextBoxX" Text="16" Grid.Column="1" Grid.Row="0" Height="30" Width="80" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Consolas" VerticalAlignment="Top" Margin="90,150,0,0">
+            <TextBox.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="9"/>
+                </Style>
+            </TextBox.Resources>
+        </TextBox>
+
+        
+        <TextBlock Grid.Column="1" Text="Pixel Y" VerticalAlignment="Top" Margin="80,193,0,0"></TextBlock>
+        <TextBox x:Name="PixelTextBoxY" Text="" Grid.Column="1" Grid.Row="0" Height="30" Width="80" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Consolas" VerticalAlignment="Top" Margin="90,185,0,0">
+            <TextBox.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="9"/>
+                </Style>
+            </TextBox.Resources>
+        </TextBox>
+
+
+        <TextBlock Grid.Column="1" TextAlignment="Center"  Text="w" FontFamily="Wingdings" FontSize="32" Width="100" VerticalAlignment="Top" Margin="92,287,92,0">
+            <TextBlock.ToolTip>
+                <ToolTip>
+                    <TextBlock TextAlignment="Left">
+                        <Run Text="Auto Calculate -&gt; Aims to determine the optimal pixel count. (Manual input is disregarded)" />
+                        <LineBreak />
+                        <Run Text="X or Y Pixel represents the desired pixel count for the image after pixelation (only one is necessary)" />
+
+
+                    </TextBlock>
+
+
+
+                </ToolTip>
+            </TextBlock.ToolTip>
+        </TextBlock>
+
+
+        <CheckBox IsChecked="True" Checked="SetGridMode"  Unchecked="SetGridMode"  Grid.Column="1" HorizontalContentAlignment="Center" Margin="80,242,80,117">
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Border}" >
+                    <Setter Property="CornerRadius" Value="3"/>
+
+                </Style>
+            </CheckBox.Resources>
+
+            <TextBlock Text="Auto Calculate" Foreground="White"  TextAlignment="Left"></TextBlock>
+        </CheckBox>
+
+
+        <Image Source="/ImageSelect.png"  DragDrop.Drop="SelectImage_DragDrop" DragEnter="SelectImage_DragEnter"  Margin="20,20,20,20" x:Name="imagePicture"/>
+        <Image Margin="20,20,20,20" Grid.Column="2"  x:Name="pixelatedImagePicture" MouseLeftButtonDown="ShowPixelImage"/>
+
+
+    </Grid>
+</Window>

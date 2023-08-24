@@ -1,0 +1,48 @@
+D:\Programedudel\.Net\Pixelator\WpfApp1\bin\Debug\Pixelator.exe.config
+D:\Programedudel\.Net\Pixelator\WpfApp1\bin\Debug\Pixelator.exe
+D:\Programedudel\.Net\Pixelator\WpfApp1\bin\Debug\Pixelator.pdb
+D:\Programedudel\.Net\Pixelator\WpfApp1\obj\Debug\Pixelator.csproj.AssemblyReference.cache
+D:\Programedudel\.Net\Pixelator\WpfApp1\obj\Debug\Pixelator.csproj.SuggestedBindingRedirects.cache
+D:\Programedudel\.Net\Pixelator\WpfApp1\obj\Debug\MainWindow.g.cs
+D:\Programedudel\.Net\Pixelator\WpfApp1\obj\Debug\App.g.cs
+D:\Programedudel\.Net\Pixelator\WpfApp1\obj\Debug\Pixelator_MarkupCompile.cache
+D:\Programedudel\.Net\Pixelator\WpfApp1\obj\Debug\Pixelator_MarkupCompile.lref
+D:\Programedudel\.Net\Pixelator\WpfApp1\obj\Debug\MainWindow.baml
+D:\Programedudel\.Net\Pixelator\WpfApp1\obj\Debug\Pixelator.g.resources
+D:\Programedudel\.Net\Pixelator\WpfApp1\obj\Debug\Pixelator.Properties.Resources.resources
+D:\Programedudel\.Net\Pixelator\WpfApp1\obj\Debug\Pixelator.csproj.GenerateResource.cache
+D:\Programedudel\.Net\Pixelator\WpfApp1\obj\Debug\Pixelator.csproj.CoreCompileInputs.cache
+D:\Programedudel\.Net\Pixelator\WpfApp1\obj\Debug\Pixelator.exe
+D:\Programedudel\.Net\Pixelator\WpfApp1\obj\Debug\Pixelator.pdb
+D:\Programedudel\.Net\Pixelator\Pixelator\bin\Debug\Pixelator.exe.config
+D:\Programedudel\.Net\Pixelator\Pixelator\bin\Debug\Pixelator.exe
+D:\Programedudel\.Net\Pixelator\Pixelator\bin\Debug\Pixelator.pdb
+D:\Programedudel\.Net\Pixelator\Pixelator\obj\Debug\Pixelator.csproj.AssemblyReference.cache
+D:\Programedudel\.Net\Pixelator\Pixelator\obj\Debug\Pixelator.csproj.SuggestedBindingRedirects.cache
+D:\Programedudel\.Net\Pixelator\Pixelator\obj\Debug\MainWindow.g.cs
+D:\Programedudel\.Net\Pixelator\Pixelator\obj\Debug\App.g.cs
+D:\Programedudel\.Net\Pixelator\Pixelator\obj\Debug\Pixelator_MarkupCompile.cache
+D:\Programedudel\.Net\Pixelator\Pixelator\obj\Debug\Pixelator_MarkupCompile.lref
+D:\Programedudel\.Net\Pixelator\Pixelator\obj\Debug\MainWindow.baml
+D:\Programedudel\.Net\Pixelator\Pixelator\obj\Debug\Pixelator.g.resources
+D:\Programedudel\.Net\Pixelator\Pixelator\obj\Debug\Pixelator.Properties.Resources.resources
+D:\Programedudel\.Net\Pixelator\Pixelator\obj\Debug\Pixelator.csproj.GenerateResource.cache
+D:\Programedudel\.Net\Pixelator\Pixelator\obj\Debug\Pixelator.csproj.CoreCompileInputs.cache
+D:\Programedudel\.Net\Pixelator\Pixelator\obj\Debug\Pixelator.exe
+D:\Programedudel\.Net\Pixelator\Pixelator\obj\Debug\Pixelator.pdb
+D:\Programedudel\.Net\Pixelator Github\Pixelator\Pixelator\bin\Debug\Pixelator.exe.config
+D:\Programedudel\.Net\Pixelator Github\Pixelator\Pixelator\bin\Debug\Pixelator.exe
+D:\Programedudel\.Net\Pixelator Github\Pixelator\Pixelator\bin\Debug\Pixelator.pdb
+D:\Programedudel\.Net\Pixelator Github\Pixelator\Pixelator\obj\Debug\Pixelator.csproj.AssemblyReference.cache
+D:\Programedudel\.Net\Pixelator Github\Pixelator\Pixelator\obj\Debug\Pixelator.csproj.SuggestedBindingRedirects.cache
+D:\Programedudel\.Net\Pixelator Github\Pixelator\Pixelator\obj\Debug\MainWindow.g.cs
+D:\Programedudel\.Net\Pixelator Github\Pixelator\Pixelator\obj\Debug\App.g.cs
+D:\Programedudel\.Net\Pixelator Github\Pixelator\Pixelator\obj\Debug\Pixelator_MarkupCompile.cache
+D:\Programedudel\.Net\Pixelator Github\Pixelator\Pixelator\obj\Debug\Pixelator_MarkupCompile.lref
+D:\Programedudel\.Net\Pixelator Github\Pixelator\Pixelator\obj\Debug\MainWindow.baml
+D:\Programedudel\.Net\Pixelator Github\Pixelator\Pixelator\obj\Debug\Pixelator.g.resources
+D:\Programedudel\.Net\Pixelator Github\Pixelator\Pixelator\obj\Debug\Pixelator.Properties.Resources.resources
+D:\Programedudel\.Net\Pixelator Github\Pixelator\Pixelator\obj\Debug\Pixelator.csproj.GenerateResource.cache
+D:\Programedudel\.Net\Pixelator Github\Pixelator\Pixelator\obj\Debug\Pixelator.csproj.CoreCompileInputs.cache
+D:\Programedudel\.Net\Pixelator Github\Pixelator\Pixelator\obj\Debug\Pixelator.exe
+D:\Programedudel\.Net\Pixelator Github\Pixelator\Pixelator\obj\Debug\Pixelator.pdb
