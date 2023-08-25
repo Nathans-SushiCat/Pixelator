@@ -84,7 +84,7 @@
 
 
         <Image Source="/ImageSelect.png"  DragDrop.Drop="SelectImage_DragDrop" DragEnter="SelectImage_DragEnter"  Margin="20,20,20,20" x:Name="imagePicture"/>
-        <Image Margin="20,20,20,20" Grid.Column="2"  x:Name="pixelatedImagePicture" MouseLeftButtonDown="ShowPixelImage"/>
+        <Image Margin="20,20,20,20" Grid.Column="2"  x:Name="pixelatedImagePicture" MouseLeftButtonDown="ShowPixelImage_LeftDown"/>
 
 
     </Grid>
