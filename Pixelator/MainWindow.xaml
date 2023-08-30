@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:Pixelator"
         mc:Ignorable="d"
         FontFamily="Consolas"
@@ -33,8 +34,8 @@
 
         <Button Content="Save Image" Click="SaveImage_Click" Background="White" FontSize="20"   Grid.Row="1" Grid.Column="2" Width="150" Height="50" Margin="66,15,67,15"/>
 
-        <TextBlock Grid.Column="1" Text="Pixel X" VerticalAlignment="Top" Margin="80,158,0,0"/>
-        <TextBox x:Name="PixelTextBoxX" Text="16" Grid.Column="1" Grid.Row="0" Height="30" Width="80" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Consolas" VerticalAlignment="Top" Margin="90,150,0,0">
+        <TextBlock Grid.Column="1" Text="Pixel X" VerticalAlignment="Top" Margin="80,68,0,0"/>
+        <TextBox x:Name="PixelTextBoxX" Text="16" Grid.Column="1" Grid.Row="0" Height="30" Width="80" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Consolas" VerticalAlignment="Top" Margin="90,60,0,0">
             <TextBox.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="9"/>
@@ -43,8 +44,8 @@
         </TextBox>
 
         
-        <TextBlock Grid.Column="1" Text="Pixel Y" VerticalAlignment="Top" Margin="80,193,0,0"></TextBlock>
-        <TextBox x:Name="PixelTextBoxY" Text="" Grid.Column="1" Grid.Row="0" Height="30" Width="80" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Consolas" VerticalAlignment="Top" Margin="90,185,0,0">
+        <TextBlock Grid.Column="1" Text="Pixel Y" VerticalAlignment="Top" Margin="80,108,0,0"></TextBlock>
+        <TextBox x:Name="PixelTextBoxY" Text="" Grid.Column="1" Grid.Row="0" Height="30" Width="80" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Consolas" VerticalAlignment="Top" Margin="90,100,0,0">
             <TextBox.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="9"/>
@@ -53,25 +54,43 @@
         </TextBox>
 
 
-        <TextBlock Grid.Column="1" TextAlignment="Center"  Text="w" FontFamily="Wingdings" FontSize="32" Width="100" VerticalAlignment="Top" Margin="92,287,92,0">
+        <TextBlock Grid.Column="1" TextAlignment="Center"  Text="w" FontFamily="Wingdings" FontSize="32" Width="100" VerticalAlignment="Top" Margin="92,350,92,0">
             <TextBlock.ToolTip>
                 <ToolTip>
                     <TextBlock TextAlignment="Left">
                         <Run Text="Auto Calculate -&gt; Aims to determine the optimal pixel count. (Manual input is disregarded)" />
                         <LineBreak />
                         <Run Text="X or Y Pixel represents the desired pixel count for the image after pixelation (only one is necessary)" />
-
-
                     </TextBlock>
-
-
-
                 </ToolTip>
             </TextBlock.ToolTip>
         </TextBlock>
 
+        
+        <TextBlock Grid.Column="1" Text="Border Tolerance" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="50,220,0,0"></TextBlock>
+        <TextBox PreviewTextInput="NumberValidationTextBox" VerticalContentAlignment="Center" Text="{Binding ElementName=borderToleranceSlider,Path=Value}"  x:Name="borderToleranceText" TextAlignment="Center" Height="20" Width="40" Grid.Column="1" VerticalAlignment="Top" Margin="0,240,90,0">
+            <TextBox.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </TextBox.Resources>
+        </TextBox>
+        <Slider Value="235" Minimum="0" Maximum="255" x:Name="borderToleranceSlider" Width=" 100" Height="20"  Grid.Column="1" VerticalAlignment="Top" Margin="60,240,0,0"/>
 
-        <CheckBox IsChecked="True" Checked="SetGridMode"  Unchecked="SetGridMode"  Grid.Column="1" HorizontalContentAlignment="Center" Margin="80,242,80,117">
+        <TextBlock Grid.Column="1" Text="Color Tolerance" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="50,270,0,0"></TextBlock>
+
+        <TextBox PreviewTextInput="NumberValidationTextBox" Text="{Binding ElementName=compareToleranceSlider,Path=Value}" VerticalContentAlignment="Center" x:Name="compareToleranceText"  TextAlignment="Center" Height="20" Width="40" Grid.Column="1" VerticalAlignment="Top" Margin="0,290,90,0">
+            <TextBox.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </TextBox.Resources>
+        </TextBox>
+        <Slider Value="0" Minimum="0" Maximum="255" x:Name="compareToleranceSlider" Width=" 100" Height="20"  Grid.Column="1" VerticalAlignment="Top" Margin="60,290,0,0"/>
+
+
+
+        <CheckBox IsChecked="True" Checked="SetGridMode"  Unchecked="SetGridMode" Width="130"  Grid.Column="1" HorizontalContentAlignment="Center" VerticalAlignment="Top" Margin="0,195,0,0">
             <CheckBox.Resources>
                 <Style TargetType="{x:Type Border}" >
                     <Setter Property="CornerRadius" Value="3"/>
@@ -82,8 +101,20 @@
             <TextBlock Text="Auto Calculate" Foreground="White"  TextAlignment="Left"></TextBlock>
         </CheckBox>
 
+        <CheckBox IsChecked="True" Checked="SetBorderMode"  Unchecked="SetBorderMode" Width="130"  Grid.Column="1" HorizontalContentAlignment="Center" VerticalAlignment="Top" Margin="0,140,0,0">
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Border}" >
+                    <Setter Property="CornerRadius" Value="3"/>
 
-        <Image Source="/ImageSelect.png"  DragDrop.Drop="SelectImage_DragDrop" DragEnter="SelectImage_DragEnter"  Margin="20,20,20,20" x:Name="imagePicture"/>
+                </Style>
+            </CheckBox.Resources>
+
+            <TextBlock Text="Delete Border" Foreground="White"  TextAlignment="Left"></TextBlock>
+        </CheckBox>
+       
+
+
+        <Image Source="/ImageSelect.png"  DragDrop.Drop="SelectImage_DragDrop"  MouseLeftButtonDown="ShowPixelImage_LeftDown" DragEnter="SelectImage_DragEnter"  Margin="20,20,20,20" x:Name="imagePicture"/>
         <Image Margin="20,20,20,20" Grid.Column="2"  x:Name="pixelatedImagePicture" MouseLeftButtonDown="ShowPixelImage_LeftDown"/>
 
 

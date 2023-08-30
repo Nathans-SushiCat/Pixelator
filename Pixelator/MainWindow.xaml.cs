@@ -13,6 +13,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -121,9 +122,27 @@ namespace Pixelator
 
         private void Pixelate_Click(object sender, RoutedEventArgs e)
         {
+            if (deleteBorder)
+            {
+                imagePicture.Source = Core.ImageConverter.DeleteImageBorder((BitmapSource)imagePicture.Source, borderToleranceSlider.Value);
+            }
+
             // TODO
-            pixelatedImagePicture.Source = Core.ImageConverter.PixelateImage(imagePicture,true, gridMode,  PixelTextBoxX.Text.ToInt(), PixelTextBoxY.Text.ToInt());
+            pixelatedImagePicture.Source = Core.ImageConverter.PixelateImage(imagePicture, compareToleranceSlider.Value, deleteBorder, gridMode, PixelTextBoxX.Text.ToInt(), PixelTextBoxY.Text.ToInt());
         }
 
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void SetBorderMode(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox checkBox)
+            {
+                deleteBorder = checkBox.IsChecked == true;
+            }
+        }
     }
 }

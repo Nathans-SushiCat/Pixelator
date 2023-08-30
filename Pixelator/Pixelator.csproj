@@ -51,6 +51,9 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>1.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -84,6 +87,7 @@
     <Compile Include="Core\ImageConverter.cs" />
     <Compile Include="Extentions\ListExtention.cs" />
     <Compile Include="Extentions\ConvertExtention.cs" />
+    <Compile Include="Helper\ColorHelper.cs" />
     <Compile Include="Helper\FileHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

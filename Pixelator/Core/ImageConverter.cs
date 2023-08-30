@@ -2,25 +2,21 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using System.Windows;
 using System.Drawing;
-using System.IO;
-using System.Windows.Input;
 using Image = System.Windows.Controls.Image;
 using Pixelator.Models;
 using Pixelator.Extentions;
+using Pixelator.Helper;
 
 namespace Pixelator.Core
 {
     internal class ImageConverter
     {
 
-        private static BitmapSource DeleteImageBorder(BitmapSource img)
+        public static BitmapSource DeleteImageBorder(BitmapSource img, double tolerance)
         {
-
 
             int offsetLeft = int.MaxValue;
             int offsetRight = int.MaxValue;
@@ -29,16 +25,21 @@ namespace Pixelator.Core
 
             Color lastColor;
 
+
+            //This is just so its faster on Bigger Images
+            int jumpHeightIndexes = (img.PixelHeight / 500) + 1;
+            int jumpWidthIndexes = (img.PixelWidth / 500) + 1;
+             
             //Top offset
-            for (int i = 0; i < img.PixelWidth; i++)
+            for (int i = 0; i < img.PixelWidth; i += jumpWidthIndexes)
             {
                 lastColor = GetPixelColor(img, i, 0);
 
-                int offsetnow = 0;
+                int offsetnow = 1;
 
                 for (int j = 1; j < img.PixelHeight; j++)
                 {
-                    if (GetPixelColor(img, i, j) == lastColor)
+                    if (ColorHelper.ComparePixelColorWithTolerance( GetPixelColor(img, i, j), lastColor, tolerance))
                     {
                         offsetnow++;
                         continue;
@@ -50,15 +51,15 @@ namespace Pixelator.Core
 
 
             //Down offset
-            for (int i = 0; i < img.PixelWidth; i++)
+            for (int i = 0; i < img.PixelWidth; i += jumpWidthIndexes)
             {
                 lastColor = GetPixelColor(img, i, img.PixelHeight - 1);
 
-                int offsetnow = 0;
+                int offsetnow = 1;
 
                 for (int j = img.PixelHeight - 2; j > 0; j--)
                 {
-                    if (GetPixelColor(img, i, j) == lastColor)
+                    if (ColorHelper.ComparePixelColorWithTolerance(GetPixelColor(img, i, j), lastColor, tolerance))
                     {
                         offsetnow++;
                         continue;
@@ -70,15 +71,15 @@ namespace Pixelator.Core
 
 
             //Left offset
-            for (int i = 0; i < img.PixelHeight; i++)
+            for (int i = 0; i < img.PixelHeight; i += jumpHeightIndexes)
             {
                 lastColor = GetPixelColor(img, 0, i);
 
-                int offsetnow = 0;
+                int offsetnow = 1;
 
                 for (int j = 1; j < img.PixelWidth; j++)
                 {
-                    if (GetPixelColor(img, j, i) == lastColor)
+                    if (ColorHelper.ComparePixelColorWithTolerance(GetPixelColor(img, j, i), lastColor, tolerance))
                     {
                         offsetnow++;
                         continue;
@@ -89,15 +90,15 @@ namespace Pixelator.Core
             }
 
             //Right offset
-            for (int i = 0; i < img.PixelHeight; i++)
+            for (int i = 0; i < img.PixelHeight; i += jumpHeightIndexes)
             {
                 lastColor = GetPixelColor(img, img.PixelWidth - 1, i);
 
-                int offsetnow = 0;
+                int offsetnow = 1;
 
                 for (int j = img.PixelWidth - 2; j > 0; j--)
                 {
-                    if (GetPixelColor(img, j, i) == lastColor)
+                    if (ColorHelper.ComparePixelColorWithTolerance(GetPixelColor(img, j, i), lastColor, tolerance))
                     {
                         offsetnow++;
                         continue;
@@ -215,19 +216,15 @@ namespace Pixelator.Core
             return writeableBitmap;
         }
 
-        public static System.Windows.Media.ImageSource PixelateImage(Image imagePicture, bool deleteBorder, GridMode gridMode, int outputImageWidth , int outputImageHeight)
+        public static System.Windows.Media.ImageSource PixelateImage(Image imagePicture, double colorCompareTolerance, bool borderRemoved, GridMode gridMode, int outputImageWidth , int outputImageHeight)
         {
-            int GridHeight = 0;
-            int GridWidth = 0;
+            float GridHeight = 0;
+            float GridWidth = 0;
             int newWidth = 0;
             int newHeight = 0;
             System.Windows.Controls.Image image = imagePicture;
             BitmapSource bitmapSource = (BitmapSource)image.Source;
-            if (deleteBorder)
-            {
-                bitmapSource = DeleteImageBorder(bitmapSource);
-                image.Source = bitmapSource;
-            }
+            
 
 
             if (gridMode == GridMode.Auto)
@@ -237,7 +234,7 @@ namespace Pixelator.Core
 
 
                 List<int> widths = new List<int>();
-                List<int> heights = new List<int>(bitmapSource.PixelHeight * bitmapSource.PixelWidth);
+                List<int> heights = new List<int>();
 
                 #region Heights Calculation
                 int currentHeight = 1;
@@ -249,7 +246,7 @@ namespace Pixelator.Core
                 {
                     for (int j = 1; j < bitmapSource.PixelHeight; j++)
                     {
-                        if (GetPixelColor(bitmapSource, i, j) == lastColor)
+                        if (ColorHelper.ComparePixelColorWithTolerance(GetPixelColor(bitmapSource, i, j),lastColor, colorCompareTolerance))
                         {
                             currentHeight++;
                             heights[heightIndex] = currentHeight;
@@ -270,6 +267,8 @@ namespace Pixelator.Core
                 }
                 heights.RemoveAll(num => num == 1);
                 heights.RemoveAll(num => num == 2);
+                heights.RemoveAll(num => num == 3);
+                heights.RemoveAll(num => num == 4);
 
                 #endregion
 
@@ -285,7 +284,7 @@ namespace Pixelator.Core
 
                     for (int i = 1; i < bitmapSource.PixelWidth; i++)
                     {
-                        if (GetPixelColor(bitmapSource, i, j) == lastColor)
+                        if (ColorHelper.ComparePixelColorWithTolerance(GetPixelColor(bitmapSource, i, j), lastColor, colorCompareTolerance))
                         {
                             currentWidth++;
                             widths[WidthIndex] = currentWidth;
@@ -306,6 +305,8 @@ namespace Pixelator.Core
                 }
                 widths.RemoveAll(num => num == 1);
                 widths.RemoveAll(num => num == 2);
+                widths.RemoveAll(num => num == 3);
+                widths.RemoveAll(num => num == 4);
 
                 #endregion
 
@@ -313,81 +314,27 @@ namespace Pixelator.Core
                 //int GridWidth = (from i in widths group i by i into grp orderby grp.Count() descending select grp.Key).First();
                 //int GridHeight = (from i in heights group i by i into grp orderby grp.Count() descending select grp.Key).First();
 
-                #region GridWidth
-                List<List<int>> sortedWidths = widths.SortAndCountFrequencies();
+                GridWidth = CalculateGridWidth(bitmapSource, borderRemoved, widths, heights);
 
-                List<float> widthsValue = new List<float>();
 
-                for (int i = 0; i < sortedWidths[0].Count; i++)
-                {
-                    widthsValue.Add(sortedWidths[0][i] * sortedWidths[1][i]);
-                }
-
-                bool isdivisible = false;
-                int biggestDivisible = 0;// = BiggestValueIndexInList(widthsValue, 3);
-
-                int biggestCount = 0;
-                while (!isdivisible)
-                {
-                    if (sortedWidths[0].Count() > biggestCount)
-                        biggestDivisible = sortedWidths[0][biggestCount];
-                    else
-                        return null;
-
-                    if (bitmapSource.PixelWidth % biggestDivisible == 0)
-                    {
-                        isdivisible = true;
-                        continue;
-                    }
-                        biggestCount++;
-
-                }
-
-                GridWidth = biggestDivisible;
-                #endregion
-
-                #region GridLHeight
-
-                List<List<int>> sortedHeights = heights.SortAndCountFrequencies();
-
-                List<float> heightsValue = new List<float>();
-
-                for (int i = 0; i < sortedHeights[0].Count; i++)
-                {
-                    heightsValue.Add(sortedHeights[0][i] * sortedHeights[1][i]);
-                }
-
-                int biggestHeightIndex = heightsValue.BiggestValueIndexInList(3);
-
-                GridHeight = sortedHeights[0][biggestHeightIndex];
-
-                #endregion
-
-                /*
-                for (int i = 0; i < Math.Min(6, sortedHeights.le); i++)
-                {
-                    Debug.WriteLine(sortedHeights[0][i]);
-                    Debug.WriteLine(sortedHeights[1][i]);
-                    Debug.WriteLine(sortedHeights[1][i] * sortedHeights[0][i]);
-                    Debug.WriteLine(GridHeight);
-                    Debug.WriteLine("");
-
-                }*/
             }
             else if (gridMode == GridMode.Manual)
             {
+                Debug.WriteLine("Width: " + (float)bitmapSource.PixelWidth / outputImageWidth);
+                Debug.WriteLine("new Width!!!!!!!!!: " + bitmapSource.PixelWidth / ((float)bitmapSource.PixelWidth / outputImageWidth));
                 if (outputImageWidth != 0)
-                    GridWidth = bitmapSource.PixelWidth / outputImageWidth;
+                    GridWidth = (float)bitmapSource.PixelWidth / outputImageWidth;
                 else if (outputImageHeight != 0)
-                    GridWidth = bitmapSource.PixelHeight / outputImageHeight;
-
+                    GridWidth = (float)bitmapSource.PixelHeight / outputImageHeight;
+                else
+                    throw new Exception("No Input!!");
             }
 
             GridHeight = GridWidth;
 
 
-            newHeight = bitmapSource.PixelHeight / GridHeight;
-            newWidth = bitmapSource.PixelWidth / GridWidth;
+            newHeight = (int)Math.Round(bitmapSource.PixelHeight / GridHeight);
+            newWidth = (int)Math.Round(bitmapSource.PixelWidth / GridWidth);
             Debug.WriteLine("HELLO THIS IS NEW HEIGHT: " + newHeight);
             Debug.WriteLine("HELLO THIS IS NEW Width: " + newWidth);
             Debug.WriteLine("New Grid Width: " + GridWidth);
@@ -399,7 +346,7 @@ namespace Pixelator.Core
             {
                 for (int j = 0; j < newHeight; j++)
                 {
-                    NewImageColors[j, i] = GetMostContainedColor(bitmapSource, i * GridWidth, j * GridHeight, GridWidth); //GetPixelColor(bitmapSource, i*GridWidth+(GridWidth/2), j*GridHeight + (GridHeight / 2));// //  
+                    NewImageColors[j, i] = GetMostContainedColor(bitmapSource, (int)Math.Round(i * GridWidth), (int)Math.Round(j * GridHeight), (int)Math.Round(GridWidth)); //GetPixelColor(bitmapSource, i*GridWidth+(GridWidth/2), j*GridHeight + (GridHeight / 2));// //  
                 }
             }
 
@@ -407,5 +354,106 @@ namespace Pixelator.Core
 
         }
 
+        public static int CalculateGridWidth(BitmapSource bitmapSource, bool borderRemoved,List<int> widths, List<int> heights)
+        {
+
+            int GridWidth;
+
+            List<List<int>> sortedWidths = widths.SortAndCountFrequencies();
+
+            List<float> widthsValue = new List<float>(sortedWidths[0].Count);
+
+            for (int i = 0; i < sortedWidths[0].Count; i++)
+            {
+                widthsValue.Add(sortedWidths[0][i] * sortedWidths[1][i]);
+            }
+
+            if (borderRemoved)
+            {
+
+                GridWidth = sortedWidths[0][widthsValue.BiggestValueIndexInList(4)];
+
+                for (int i = 0; i < sortedWidths[0].Count; i++)
+                {
+                    Debug.WriteLine(sortedWidths[0][i]);
+                    Debug.WriteLine(sortedWidths[1][i]);
+                    Debug.WriteLine(sortedWidths[1][i] * sortedWidths[0][i]);
+                    Debug.WriteLine(GridWidth);
+                    Debug.WriteLine("");
+
+                }
+            } else
+            {
+
+                #region GridWidth
+               
+
+
+                bool isdivisible = false;
+                int biggestDivisible = 0;
+
+                int biggestCount = 0;
+                while (!isdivisible)
+                {
+                    if (sortedWidths[0].Count() > biggestCount)
+                        biggestDivisible = sortedWidths[0][biggestCount];
+                    else
+                    {
+                        Debug.WriteLine("Didn't find Pixel Width");
+                        // <---------------------------------------- Try  Height ---------------------------------------->
+                        //throw new Exception("Didn't find Pixel size!!");
+
+                        #region GridLHeight
+
+                        List<List<int>> sortedHeights = heights.SortAndCountFrequencies();
+
+                        biggestDivisible = sortedHeights[0][0];
+                        break;
+                        #endregion
+                    }
+
+
+                    if (bitmapSource.PixelWidth % biggestDivisible == 0)
+                    {
+                        isdivisible = true;
+                        continue;
+                    }
+                    biggestCount++;
+
+                }
+
+                GridWidth = biggestDivisible;
+                #endregion
+
+                for (int i = 0; i < Math.Min(6, sortedWidths[0].Count); i++)
+                {
+                    Debug.WriteLine(sortedWidths[0][i]);
+                    Debug.WriteLine(sortedWidths[1][i]);
+                    Debug.WriteLine(sortedWidths[1][i] * sortedWidths[0][i]);
+                    Debug.WriteLine(GridWidth);
+                    Debug.WriteLine("");
+
+                }
+
+                List<List<int>> sortedHeights1 = heights.SortAndCountFrequencies();
+
+
+                for (int i = 0; i < Math.Min(6, sortedWidths[0].Count); i++)
+                {
+                    Debug.WriteLine("Height");
+                    Debug.WriteLine(sortedHeights1[0][i]);
+                    Debug.WriteLine(sortedHeights1[1][i]);
+                    Debug.WriteLine(sortedHeights1[1][i] * sortedHeights1[0][i]);
+                    Debug.WriteLine(GridWidth);
+                    Debug.WriteLine("");
+
+                }
+            }
+
+            return GridWidth;
+
+        }
+
     }
+
 }
